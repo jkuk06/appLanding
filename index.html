@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doni 앱으로 이동</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f8f9fa; color: #333; text-align: center; }
+        .container { padding: 20px; }
+        img { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn { padding: 15px 40px; background: #ff5a5f; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 18px; display: inline-block; transition: transform 0.2s; }
+        .btn:active { transform: scale(0.95); }
+        p { color: #777; margin-top: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Doni 앱 로고 (실제 URL로 교체하세요) -->
+        <img src="https://repin-live-cdn-eadfghbreyezf3a7.a03.azurefd.net/page/5beca0e3_img.jpg" alt="Doni">
+        <h2>Doni 앱에서 확인하시겠어요?</h2>
+        <br>
+        <a id="open-btn" href="#" class="btn">앱에서 열기</a>
+        <p>앱이 설치되어 있지 않다면 스토어로 이동합니다.</p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // 1. 현재 주소창의 파라미터 읽기 (?deep_link_value=...&invite=...)
+            var queryString = window.location.search; 
+            var urlParams = new URLSearchParams(queryString);
+            
+            // 2. 경로 설정 (deep_link_value가 있으면 경로로 사용)
+            var path = urlParams.get('deep_link_value') || "";
+            
+            // 3. 최종 커스텀 스킴 URL 조립 (lfdoniapp://path?params)
+            var finalScheme = "lfdoniapp://" + path + queryString;
+
+            // 4. 버튼에 링크 주입
+            var btn = document.getElementById('open-btn');
+            btn.href = finalScheme;
+
+            // 5. 페이지 로드 시 0.5초 뒤 자동 실행 시도 (에어브릿지 방식)
+            setTimeout(function() {
+                window.location.href = finalScheme;
+            }, 500);
+        };
+    </script>
+</body>
+</html>
