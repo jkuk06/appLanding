@@ -1,49 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doni 앱으로 이동</title>
     <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f8f9fa; color: #333; text-align: center; }
-        .container { padding: 20px; }
-        img { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .btn { padding: 15px 40px; background: #ff5a5f; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 18px; display: inline-block; transition: transform 0.2s; }
-        .btn:active { transform: scale(0.95); }
-        p { color: #777; margin-top: 20px; font-size: 14px; }
+        /* 배경 및 기본 레이아웃 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff;
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* 앱 로고 스타일: 크기를 140px로 확대 */
+        .app-logo {
+            width: 140px;
+            height: 140px;
+            border-radius: 30px;
+            /* 앱 아이콘처럼 둥글게 */
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            /* 부드러운 그림자 */
+            object-fit: cover;
+        }
+
+        /* 텍스트 스타일 */
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* 버튼 스타일 */
+        .btn {
+            display: inline-block;
+            padding: 18px 60px;
+            background: #ff5a5f;
+            /* Doni 브랜드 컬러에 맞게 수정하세요 */
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(255, 90, 95, 0.3);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+            background: #e04e52;
+        }
+
+        /* 하단 안내 문구 */
+        .footer-text {
+            position: absolute;
+            bottom: 40px;
+            font-size: 13px;
+            color: #bbb;
+        }
     </style>
 </head>
+
 <body>
+
     <div class="container">
-        <!-- Doni 앱 로고 (실제 URL로 교체하세요) -->
-        <img src="https://repin-live-cdn-eadfghbreyezf3a7.a03.azurefd.net/page/5beca0e3_img.jpg" alt="Doni">
-        <h2>Doni 앱에서 확인하시겠어요?</h2>
-        <br>
+        <!-- 앱 로고: 현재 favicon을 사용 중이나, 고화질 PNG 파일이 있다면 그 주소를 넣으세요 -->
+        <img src="https://repin-live-cdn-eadfghbreyezf3a7.a03.azurefd.net/page/5beca0e3_img.jpg" alt="Doni 앱 로고"
+            class="app-logo">
+
+        <h2>Doni 앱에서 확인하기</h2>
+        <p>앱이 설치되어 있다면 페이지로 이동하며,<br>설치되지 않은 경우 스토어로 이동합니다.</p>
+
         <a id="open-btn" href="#" class="btn">앱에서 열기</a>
-        <p>앱이 설치되어 있지 않다면 스토어로 이동합니다.</p>
     </div>
 
+    <div class="footer-text">Doni 서비스로 연결 중입니다</div>
+
     <script>
-        window.onload = function() {
-            // 1. 현재 주소창의 파라미터 읽기 (?deep_link_value=...&invite=...)
-            var queryString = window.location.search; 
+        window.onload = function () {
+            // 1. URL 파라미터 추출
+            var queryString = window.location.search;
             var urlParams = new URLSearchParams(queryString);
-            
-            // 2. 경로 설정 (deep_link_value가 있으면 경로로 사용)
+
+            // 2. deep_link_value가 있으면 경로로 사용
             var path = urlParams.get('deep_link_value') || "";
-            
+
             // 3. 최종 커스텀 스킴 URL 조립 (lfdoniapp://path?params)
             var finalScheme = "lfdoniapp://" + path + queryString;
 
-            // 4. 버튼에 링크 주입
+            // 4. 버튼 링크 업데이트
             var btn = document.getElementById('open-btn');
             btn.href = finalScheme;
 
-            // 5. 페이지 로드 시 0.5초 뒤 자동 실행 시도 (에어브릿지 방식)
-            setTimeout(function() {
+            // 5. 자동으로 앱 실행 시도 (0.6초 뒤)
+            setTimeout(function () {
                 window.location.href = finalScheme;
-            }, 500);
+            }, 600);
         };
     </script>
 </body>
+
 </html>
